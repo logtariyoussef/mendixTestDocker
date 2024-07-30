@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mendix-app:
+    image: yousseflogtari/youssef:mxdock-v2
+    environment:
+      - MXRUNTIME_DatabaseType=PostgreSQL
+      - MXRUNTIME_DatabaseUserName=postgres
+      - MXRUNTIME_DatabasePassword=youssef31
+      - MXRUNTIME_DatabaseJdbcUrl=jdbc:postgresql://db:5432/Mxdocker
+      - MXRUNTIME_DatabaseName=Mxdocker
+    depends_on:
+      - db
+    ports:
+      - "8085:8085" # Adjust as needed
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: youssef31
+      POSTGRES_DB: Mxdocker
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  db-data:
